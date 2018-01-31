@@ -1,4 +1,4 @@
-## Conditional-Batch-Norm
+## Conditional Batch Normalization
 Pytorch implementation of NIPS 2017 paper "Modulating early visual processing by language" 
 [[Link]](https://papers.nips.cc/paper/7237-modulating-early-visual-processing-by-language.pdf) </br>
 
