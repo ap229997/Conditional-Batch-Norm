@@ -36,7 +36,7 @@ python preprocess_data/create_gloves.py --data_dir data --glove_in data/glove.42
 ### Train Model
 To train the network, set the required parameters in ``` config.json ``` and run the script main.py.
 ```
-python main.py --gpu gpu_id --data_dir data/ --img_dir images/ --config config.json --exp_dir exp/ --year 2014
+python main.py --gpu gpu_id --data_dir data --img_dir images --config config.json --exp_dir exp --year 2014
 ```
 
 ### Citation
