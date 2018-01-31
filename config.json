@@ -1,0 +1,57 @@
+{
+  "model": {
+
+    "name" : "VQA historical baseline (small)  with classic attention",
+
+    "image":
+    {
+      "image_input": "raw",
+      "dim": [224, 224, 3],
+      "normalize": true,
+
+      "resnet_version": 50,
+      "finetune" : [],
+
+      "attention" : {
+        "mode": "classic",
+        "no_attention_mlp": 256
+      },
+
+      "cbn": {
+        "use_cbn": true,
+        "cbn_embedding_size": 512,
+        "excluded_scope_names": ["*"]
+      }
+
+    },
+
+    "glove": true,
+
+    "word_embedding_dim": 300,
+    "no_hidden_LSTM": 1024,
+    "no_LSTM_cell": 1,
+
+    "no_question_mlp": 1024,
+    "no_image_mlp": 1024,
+
+    "no_hidden_final_mlp": 1024,
+    "dropout_keep_prob": 0.5,
+
+    "loss": "soft",
+    "activation": "tanh"
+  },
+
+  "optimizer": {
+    "max_iters": 100000,
+    "learning_rate": 3e-4,
+    "batch_size": 20,
+    "step_size": 20000,
+    "clip_val": 5
+  },
+
+  "dico_name" : "dict.json",
+  "glove_name" : "glove_dict.pkl",
+
+  "merge_dataset": false,
+  "seed": -1
+}
