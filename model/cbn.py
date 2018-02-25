@@ -27,7 +27,13 @@ class CBN(nn.Module):
         self.eps = eps
 
         # MLP used to predict betas and gammas
-        self.fc = nn.Sequential(
+        self.fc_gamma = nn.Sequential(
+            nn.Linear(self.lstm_size, self.emb_size),
+            nn.ReLU(inplace=True),
+            nn.Linear(self.emb_size, self.out_size),
+            ).cuda()
+
+        self.fc_beta = nn.Sequential(
             nn.Linear(self.lstm_size, self.emb_size),
             nn.ReLU(inplace=True),
             nn.Linear(self.emb_size, self.out_size),
@@ -51,12 +57,12 @@ class CBN(nn.Module):
     def create_cbn_input(self, lstm_emb):
 
         if self.use_betas:
-            delta_betas = self.fc(lstm_emb)
+            delta_betas = self.fc_beta(lstm_emb)
         else:
             delta_betas = torch.zeros(self.batch_size, self.channels).cuda()
 
         if self.use_gammas:
-            delta_gammas = self.fc(lstm_emb)
+            delta_gammas = self.fc_gamma(lstm_emb)
         else:
             delta_gammas = torch.zeros(self.batch_size, self.channels).cuda()
 
