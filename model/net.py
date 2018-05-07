@@ -94,7 +94,7 @@ class Net(nn.Module):
 	Retuns: 
 		loss : hard cross entropy loss
 	'''
-	def forward(self, image, tokens, glove_emb, labels):
+	def forward(self, image, tokens, glove_emb, labels=None):
 
 		####### Question Embedding #######
 		# get the lstm representation of the final state at time t
@@ -124,9 +124,11 @@ class Net(nn.Module):
 		prob = self.softmax(out)
 		val, ind = torch.max(prob, dim=1)
 		# hard cross entropy loss
-		loss = self.loss(prob, labels)
-
-		return loss
+		if labels is not None:
+			loss = self.loss(prob, labels)
+			return loss, ind
+		else:
+			return ind
 
 '''
 # testing code
