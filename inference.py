@@ -71,7 +71,7 @@ class DataLoader(object):
 	'''
 	Arguments:
 		image : pass the image in (batch, height, width, channels) format - batch=1 for single image
-		question : list of question required 
+		question : list of question required
 
 	Returns:
 		image : image in the form of torch.autograd.Varibale - (batch, channels, height, width) format
@@ -98,7 +98,7 @@ class DataLoader(object):
 			for i in range(max_len-len(x)):
 				x.append('<unk>')
 		tokens = Variable(torch.LongTensor(tokens).cuda())
-		
+
 		# if required
 		# get the glove embeddings of the question token and convert them into torch.autograd.Variable
 		glove_emb = [self.glove.get_embeddings(x) for x in words]
@@ -110,8 +110,11 @@ def main():
 	dataloader = DataLoader(config, batch_size=1)
 
 	model = Net(config=config, no_words=dataloader.tokenizer.no_words, no_answers=dataloader.tokenizer.no_answers,
-				resnet_model=resnet_model, lstm_size=lstm_size, emb_size=emb_size, use_pretrained=False).cuda()
+				resnet_model=resnet_model, lstm_size=lstm_size, emb_size=emb_size, use_pretrained=False)
 
+	model_weight = torch.load(config['checkpoint_path'])
+	model.load_state_dict(model_weight, strict = False)
+	model.cuda().eval()
 	'''
 	load the image and question in proper format and then execute the below code
 	'''
@@ -120,9 +123,8 @@ def main():
 
 	ind_ans = model(image, tokens, glove_emb)
 
-	# convert the ind_ans (indices to answers with max probability) 
+	# convert the ind_ans (indices to answers with max probability)
 	# using decode_answer function in tokenizer (look it up once)
 
 if __name__ == '__main__':
 	main()
-

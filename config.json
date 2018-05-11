@@ -51,6 +51,7 @@
 
   "dico_name" : "dict.json",
   "glove_name" : "glove_dict.pkl",
+  "checkpoint_path" : "checkpoint10.pth",
 
   "merge_dataset": false,
   "seed": -1
