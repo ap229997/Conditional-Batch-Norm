@@ -20,10 +20,11 @@ class CBN(nn.Module):
         self.batch_size = None
         self.channels = None
         self.height = None
-        self.width = None       
+        self.width = None
 
-        self.betas = None
-        self.gammas = None
+        # beta and gamma parameters for each channel - defined as trainable parameters
+        self.betas = nn.Parameter(torch.zeros(self.batch_size, self.channels).cuda())
+        self.gammas = nn.Parameter(torch.ones(self.batch_size, self.channels).cuda())
         self.eps = eps
 
         # MLP used to predict betas and gammas
@@ -85,9 +86,6 @@ class CBN(nn.Module):
     def forward(self, feature, lstm_emb):
         self.batch_size, self.channels, self.height, self.width = feature.data.shape
 
-        # beta and gamma parameters for each channel - defined as trainable parameters
-        self.betas = nn.Parameter(torch.zeros(self.batch_size, self.channels).cuda())
-        self.gammas = nn.Parameter(torch.ones(self.batch_size, self.channels).cuda())
 
         # get delta values
         delta_betas, delta_gammas = self.create_cbn_input(lstm_emb)
@@ -112,7 +110,7 @@ class CBN(nn.Module):
 
         # normalize the feature map
         feature_normalized = (feature-batch_mean)/torch.sqrt(batch_var+self.eps)
-        
+
         # get the normalized feature map with the updated beta and gamma values
         out = torch.mul(feature_normalized, gammas_expanded) + betas_expanded
 
