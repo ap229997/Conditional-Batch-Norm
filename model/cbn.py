@@ -8,7 +8,7 @@ CBN (Conditional Batch Normalization layer)
 '''
 class CBN(nn.Module):
 
-    def __init__(self, lstm_size, emb_size, out_size, use_betas=True, use_gammas=True, eps=1.0e-5):
+    def __init__(self, lstm_size, emb_size, out_size, batch_size, channels, height, width, use_betas=True, use_gammas=True, eps=1.0e-5):
         super(CBN, self).__init__()
 
         self.lstm_size = lstm_size # size of the lstm emb which is input to MLP
@@ -17,10 +17,10 @@ class CBN(nn.Module):
         self.use_betas = use_betas
         self.use_gammas = use_gammas
 
-        self.batch_size = None
-        self.channels = None
-        self.height = None
-        self.width = None
+        self.batch_size = batch_size
+        self.channels = channels
+        self.height = height
+        self.width = width
 
         # beta and gamma parameters for each channel - defined as trainable parameters
         self.betas = nn.Parameter(torch.zeros(self.batch_size, self.channels).cuda())
